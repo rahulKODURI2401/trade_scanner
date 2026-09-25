@@ -1,0 +1,11 @@
+streamlit>=1.50
+plotly>=5.20
+pandas>=2.1
+numpy>=1.26
+pyyaml>=6.0
+openpyxl>=3.1
+requests>=2.31
+yfinance>=0.2.54      # only used when the Yahoo provider is selected
+pytest>=8.0
+# Optional: desktop notifications (enable in Settings > Alerts)
+# plyer>=2.1

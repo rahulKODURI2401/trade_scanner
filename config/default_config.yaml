@@ -1,0 +1,92 @@
+# PC Trade Scanner - default strategy configuration.
+# Edit from the Settings screen; every save creates a new config version
+# (stored in the local SQLite db) and each scan / backtest records the version it used.
+
+data:
+  provider: upstox          # upstox (free, official) | kite (Zerodha, needs login) | yahoo (unofficial fallback) | csv
+  csv_folder: data/csv      # used when provider = csv
+  intraday_history_days: 28 # 5m history to load (Upstox allows 1 month per request)
+  daily_history_days: 600   # daily history to load (200 SMA needs 200+ sessions)
+  cache_seconds_intraday: 45
+  cache_seconds_daily: 900
+  max_workers: 6            # parallel downloads
+  timezone: Asia/Kolkata
+  max_staleness_minutes_intraday: 10
+  max_staleness_days_swing: 4
+  min_bars_intraday: 100
+  min_bars_swing: 250
+  early_candle_mode: false  # true = allow signals on the still-forming candle
+
+session:
+  open: "09:15"
+  close: "15:30"
+  start_delay_minutes: 15
+  end_buffer_minutes: 60
+
+timeframes:
+  intraday_primary: 5m
+  intraday_confirm: 15m
+  swing_primary: 1D
+
+indicators:
+  ema_fast: 9
+  ema_slow: 21
+  ema_trend: 20
+  sma_mid: 50
+  sma_long: 200
+  supertrend_period: 10
+  supertrend_multiplier: 3.0
+  bb_period: 20
+  bb_std: 2.0
+  rsi_period: 14
+  macd_fast: 12
+  macd_slow: 26
+  macd_signal: 9
+  atr_period: 14
+  relvol_lookback: 20
+  swing_lookback: 3         # bars each side to confirm a swing high/low
+
+setups:
+  pullback_tolerance_atr: 0.5    # low within this many ATRs of VWAP/PP/EMA counts as a pullback
+  pullback_window: 6             # bars to look back for the pullback
+  tick_buffer: 0.05              # added above trigger high / below trigger low
+  min_stop_atr: 0.5              # stop at least this many ATRs from entry
+  strong_candle_body_ratio: 0.6
+  squeeze_lookback: 100
+  squeeze_percentile: 20         # bandwidth below this percentile = squeeze
+  divergence_window: 60
+  gap_min_pct: 2.0
+  gap_retest_max_bars: 15
+
+scoring:
+  buy_threshold: 75
+  watch_threshold: 60
+  sell_threshold: 75
+  enable_short: true
+  min_rr: 1.5
+  preferred_rr: 2.0
+  relvol_threshold: 1.5
+  min_avg_volume: 20000       # liquidity gate: 20-bar average volume
+  atr_ratio_min_pct: 0.15
+  atr_ratio_max_pct: 4.0
+
+risk:
+  capital: 500000
+  risk_percent: 0.5
+  target2_r: 3.0
+  max_daily_loss_pct: 1.5   # stop taking new trades after this loss for the day
+  max_trades_per_day: 3
+
+calls:
+  entry_valid_bars_intraday: 3   # a call expires if entry is not triggered within N candles
+  entry_valid_bars_swing: 3
+  max_hold_bars_swing: 20
+
+universe:
+  name: NIFTY 50            # NIFTY 50 | NIFTY NEXT 50 | NIFTY 100 | NIFTY 200 | NIFTY 500 | NIFTY BANK | Custom list
+  custom_symbols: "RELIANCE, TCS, HDFCBANK, BDL, HAL, BEL"
+
+alerts:
+  enabled: true
+  desktop_notifications: false
+  cooldown_minutes: 30
